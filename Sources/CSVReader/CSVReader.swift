@@ -5,7 +5,7 @@ public enum CSVError: Error {
 }
 
 public final class CSVReader {
-    public func read(file: URL, includesHeaders: Bool = true) throws -> CSVData {
+    public func read(_ file: URL, includesHeaders: Bool = true) throws -> CSVData {
         let content = try String(contentsOf: file)
         let rows = content.split(separator: "\n")
 
@@ -45,11 +45,11 @@ public struct CSVData {
         self.values = values
     }
 
-    public func value(ofColumnWithHeader header: String, atIndex index: Int) -> String? {
+    public func value(ofColumnWithHeader header: String, onLine lineIndex: Int) -> String? {
         guard let columnIndex = headers?.firstIndex(of: header) else {
             return nil
         }
 
-        return values[index][columnIndex]
+        return values[lineIndex][columnIndex]
     }
 }
