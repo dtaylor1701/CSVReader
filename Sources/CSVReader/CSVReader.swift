@@ -5,6 +5,11 @@ public enum CSVError: Error {
 }
 
 public final class CSVReader {
+
+    public init() {
+
+    }
+
     public func read(_ file: URL, includesHeaders: Bool = true) throws -> CSVData {
         let content = try String(contentsOf: file)
         let rows = content.split(separator: "\n")
