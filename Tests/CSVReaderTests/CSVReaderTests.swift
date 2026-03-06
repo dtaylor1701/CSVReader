@@ -1,44 +1,33 @@
-import XCTest
+import Testing
 import Foundation
 @testable import CSVReader
 
-final class CSVReaderTests: XCTestCase {
+@Suite("CSVReader Tests")
+struct CSVReaderTests {
 
-    var reader: CSVReader!
+    let reader = CSVReader()
 
-    override func setUpWithError() throws {
-        reader = CSVReader()
-    }
-
-    override func tearDownWithError() throws {
-        reader = nil
-    }
-
-    func testReadFileWithHeaders() throws {
+    @Test func readFileWithHeaders() throws {
         guard let file = Bundle.module.url(forResource: "Resources/Test", withExtension: "csv")
           else { fatalError() }
         let data = try reader.read(file)
 
-        XCTAssertEqual(data.headers?.count, 3)
-        XCTAssertEqual(data.values.count, 4)
+        #expect(data.headers?.count == 3)
+        #expect(data.values.count == 4)
 
-        XCTAssertEqual(data.headers, ["Header 1", "Header 2", "Header 3"])
+        #expect(data.headers == ["Header 1", "Header 2", "Header 3"])
 
-        XCTAssertEqual(data.value(ofColumnWithHeader: "Header 2", onLine: 2), "7")
+        #expect(data.value(ofColumnWithHeader: "Header 2", onLine: 2) == "7")
     }
 
-    func testReadFileWithoutHeaders() throws {
+    @Test func readFileWithoutHeaders() throws {
         guard let file = Bundle.module.url(forResource: "Resources/Test", withExtension: "csv")
           else { fatalError() }
         let data = try reader.read(file, includesHeaders: false)
 
-        XCTAssertNil(data.headers)
-        XCTAssertEqual(data.values.count, 5)
+        #expect(data.headers == nil)
+        #expect(data.values.count == 5)
 
-        XCTAssertEqual(data.values[3][1], "7")
+        #expect(data.values[3][1] == "7")
     }
-
-    static var allTests = [
-        ("testExample", testReadFileWithHeaders),
-    ]
 } 
